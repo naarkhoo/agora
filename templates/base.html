@@ -1,0 +1,65 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="/static/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="/static/margins.css" rel="stylesheet" media="screen">
+        <style type="text/css">
+          body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+          }
+        </style>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="/static/jquery.cookie.js"></script>
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="brand" href="/">Hacking News...</a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav">
+                            <li><a href="/new">{% trans "New" %}</a></li>
+                            <li><a href="/newcomments">{% trans "Comments" %}</a></li>
+                            {% if user.is_authenticated %}
+                            <li><a href="/submit">{% trans "Submit" %}</a></li>
+                            {% endif %}
+                        </ul>
+                        <p class="navbar-text pull-right">
+                        {% if user.is_authenticated %}
+                        {% blocktrans %}
+                        Logged in as <a href="/user/{{ user.username }}" class="navbar-link">{{ user.username }}</a>
+                        {% endblocktrans %}
+                        {% else %}
+                        <a href="login" class="navbar-link">{% trans "Login" %}</a>
+                        {% endif %}
+                        </p>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            {% block body %}
+            {% endblock %}
+        </div>
+        <footer>
+            <div class="container">
+                <hr>
+                <p>&copy; Dmitrii Prihodco 2013</p>
+            </div>
+        </footer>
+<script>
+$(document).ready(function() {
+    $(".upvote").on("click", function(event){
+        var vote = $(this);
+        var csrftoken = $.cookie('csrftoken');
+        console.log(vote);
+        $.post("/upvote", {"type":vote.data("type"), "id": vote.data("id"), "csrfmiddlewaretoken": csrftoken}).done(function() {
+            console.log("done");
+        });
+    });
+});
+</script>
+    </body>
+</html>

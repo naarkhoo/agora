@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block body %}
+<div >
+    <h3>{{ usr.username }}</h3>
+    <table>
+        <tr>
+            <td>{% trans "Karma" %}</td>
+            <td>{{ karma }}</td>
+        </tr>
+        <tr>
+            <td>{% trans "Posts count" %}</td>
+            <td>{{ posts_count }}</td>
+        </tr>
+        <tr>
+            <td>{% trans "Comments count" %}</td>
+            <td>{{ comments_count }}</td>
+        </tr>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block body %}
+<div class="container">
+    {% for post in posts %}
+    <div> 
+        <a class="upvote" data-type="post" data-id="{{ post.id }}"><img src="/static/thumb_up.png"></a>
+        <span><a href="{{ post.url }}">{{ post.title }}</a></span>
+        <br/>
+        <small>
+            {% blocktrans %}
+            {{ post.upvotes }} points by {{ post.user.username }} on {{ post.timestamp }} | <a href="/post/{{ post.id }}/">{{ post.comment_set.count }} comments </a>
+            {% endblocktrans %}
+        </small>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

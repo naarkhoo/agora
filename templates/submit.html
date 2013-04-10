@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block body %}
+<div >
+    <form action="/submit" method="post">
+        {% csrf_token %}
+        <input type="text" class="input-block-level" placeholder="{% trans "Title of this post" %}" name="title">
+        <input type="text" class="input-block-level" placeholder="{% trans "URL" %}" name="url">
+        <textarea class="input-block-level" placeholder="{% trans "Write something here." %}" name="text"></textarea>
+        <button class="btn btn-large btn-primary" type="submit">{% trans "Submit" %}</button>
+    </form>
+</div>
+{% endblock %}

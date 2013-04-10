@@ -1,0 +1,121 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-04-10 10:09+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#: templates/base.html:23
+msgid "New"
+msgstr ""
+
+#: templates/base.html:24
+msgid "Comments"
+msgstr ""
+
+#: templates/base.html:26 templates/post.html:26 templates/submit.html:11
+msgid "Submit"
+msgstr ""
+
+#: templates/base.html:31
+# This, and some of the following patterns needed to have included html code
+# Please transfer it to translated string, to its apropriate place
+#, python-format
+msgid ""
+"\n"
+"                        Logged in as <a href=\"/user/%(user.username)s\" "
+"class=\"navbar-link\">%(user.username)s</a>\n"
+"                        "
+msgstr ""
+
+#: templates/base.html:35 templates/login.html:10
+msgid "Login"
+msgstr ""
+
+#: templates/comments.html:8
+#, python-format
+msgid ""
+"By %(comment.user.username)s on <a href=\"/post/%(comment.post.id)s\">"
+"%(comment.post.title)s</a>"
+msgstr ""
+
+#: templates/login.html:8 templates/login.html.py:14
+msgid "Username"
+msgstr ""
+
+#: templates/login.html:9 templates/login.html.py:15
+msgid "Password"
+msgstr ""
+
+#: templates/post.html:14
+#, python-format
+msgid ""
+"\n"
+"            %(post.upvotes)s points by <a href=\"/user/%(post.user.username)s"
+"\">%(post.user.username)s</a> on %(post.timestamp)s | "
+"%(post.comment_set.count)s comments\n"
+"            "
+msgstr ""
+
+#: templates/post.html:22
+msgid "Add a comment"
+msgstr ""
+
+#: templates/post.html:37
+#, python-format
+msgid ""
+"%(comment.user.username)s on %(comment.timestamp)s, %(comment.upvotes)s "
+"points, "
+msgstr ""
+
+#: templates/post.html:40
+msgid "Reply"
+msgstr ""
+
+#: templates/posts.html:11
+#, python-format
+msgid ""
+"\n"
+"            %(post.upvotes)s points by %(post.user.username)s on "
+"%(post.timestamp)s | <a href=\"/post/%(post.id)s/\">"
+"%(post.comment_set.count)s comments </a>\n"
+"            "
+msgstr ""
+
+#: templates/submit.html:8
+msgid "Title of this post"
+msgstr ""
+
+#: templates/submit.html:9
+msgid "URL"
+msgstr ""
+
+#: templates/submit.html:10
+msgid "Write something here."
+msgstr ""
+
+#: templates/user.html:9
+msgid "Karma"
+msgstr ""
+
+#: templates/user.html:13
+msgid "Posts count"
+msgstr ""
+
+#: templates/user.html:17
+msgid "Comments count"
+msgstr ""

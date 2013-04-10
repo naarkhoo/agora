@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block body %}
+<div class="span6">
+    <form class="span3" action="/login" method="post">
+        {% csrf_token %}
+        <input type="text" class="input-block-level" placeholder="{% trans "Username" %}" name="name">
+        <input type="password" class="input-block-level" placeholder="{% trans "Password" %}" name="pass">
+        <button class="btn btn-large btn-primary" type="submit">{% trans "Login" %}</button>
+    </form>
+    <form class="span3" action="/register" method="post">
+        {% csrf_token %}
+        <input type="text" class="input-block-level" placeholder="{% trans "Username" %}" name="name">
+        <input type="password" class="input-block-level" placeholder="{% trans "Password" %}" name="pass">
+        <button class="btn btn-large btn-primary" type="submit">{% trans "Register"}</button>
+    </form>
+</div>
+{% endblock %}

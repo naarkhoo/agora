@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block body %}
+<div class="container">
+    {% for comment in comments %}
+    <div> 
+        <a class="upvote" data-type="comment" data-id="{{ comment.id }}"><img src="/static/thumb_up.png"></a>
+        <span>{% blocktrans %}By {{ comment.user.username }} on <a href="/post/{{ comment.post.id }}">{{ comment.post.title }}</a>{% endblocktrans %}</span>
+        <p>{{ comment.text }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

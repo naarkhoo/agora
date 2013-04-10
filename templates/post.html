@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block body %}
+    <div> 
+        <a class="upvote" data-type="post" data-id="{{ post.id }}"><img src="/static/thumb_up.png"></a>
+        <span><a href="{{ post.url }}">{{ post.title }}</a></span>
+    </div>
+    <div>
+        {{ post.text }}
+    </div>
+    <div> 
+        <small>
+            {% blocktrans %}
+            {{ post.upvotes }} points by <a href="/user/{{ post.user.username }}">{{ post.user.username }}</a> on {{ post.timestamp }} | {{ post.comment_set.count }} comments
+            {% endblocktrans %}
+        </small>
+    </div>
+    {% if user.is_authenticated %}
+    <form id="comment-form" class="comment-form" action="/comment" method="post">
+        {% csrf_token %}
+        <textarea class="input-block-level" placeholder="{% trans "Add a comment" %}" name="text"></textarea>
+        <input type="hidden" name="post" value="{{ post.id }}"></input>
+        <input type="hidden" class="parent-input" name="parent"value="0"></input>
+        <input type="hidden" name="user" value="{{ user.id }}"></input>
+        <button class="btn btn-primary" type="submit">{% trans "Submit" %}</button>
+    </form>
+    {% endif %}
+    {% for comment in comments %}
+        {% if comment.depth != 0 and comment.depth < 6 %}
+            <div class="span9 margin{{ comment.depth }}" id="{{ comment.id }}">
+        {% elif comment.depth >= 6 %}
+            <div class="span9 margin6" id="{{ comment.id }}">
+        {% else %}
+            <div class="span9" id="{{ comment.id }}">
+        {% endif %}
+        <small>{% blocktrans %}{{ comment.user.username }} on {{ comment.timestamp }}, {{ comment.upvotes }} points, {% endblocktrans %}
+            <a class="upvote" data-type="comment" data-id="{{ comment.id }}"><img src="/static/thumb_up.png"></a>
+            <p>{{ comment.text }}</p>
+            <a class="ReplyBtn" data-id="{{ comment.id }}">{% trans "Reply" %}</a>
+        </small>
+        </div>
+    {% endfor %}
+<script>
+$(document).ready(function() {
+    commentForm = $("#comment-form").clone();
+    $(".ReplyBtn").on("click", function(event){
+        cmtForm = commentForm.clone();
+        cmtForm.children(".parent-input").attr("value", $(this).data("id"));
+
+        $(this).parent().append(cmtForm);
+    });
+});
+</script>
+{% endblock %}
