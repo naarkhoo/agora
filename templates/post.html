@@ -4,6 +4,7 @@
 {% block body %}
     <div> 
         <a class="upvote" data-type="post" data-id="{{ post.id }}"><img src="/static/thumb_up.png"></a>
+        <a class="downvote" data-type="post" data-id="{{ post.id }}"><img src="/static/thumb_down.png"></a>
         <span><a href="{{ post.url }}">{{ post.title }}</a></span>
     </div>
     <div>
@@ -11,8 +12,8 @@
     </div>
     <div> 
         <small>
-            {% blocktrans %}
-            {{ post.upvotes }} points by <a href="/user/{{ post.user.username }}">{{ post.user.username }}</a> on {{ post.timestamp }} | {{ post.comment_set.count }} comments
+            {% blocktrans with upvotes=post.upvotes uname=post.user.username timestamp=post.timestamp comments=post.comment_set.count pid=post.id %}
+            <span class="points" data-id="{{pid}}">{{ upvotes }}</span> points by <a href="/user/{{ uname }}">{{ uname }}</a> on {{ timestamp }} | {{ comments }} comments
             {% endblocktrans %}
         </small>
     </div>
@@ -32,10 +33,11 @@
         {% elif comment.depth >= 6 %}
             <div class="span9 margin6" id="{{ comment.id }}">
         {% else %}
-            <div class="span9" id="{{ comment.id }}">
+            <div class="span9" id="{{ comment.id }}"><span>{{comment.number}}</span>
         {% endif %}
-        <small>{% blocktrans %}{{ comment.user.username }} on {{ comment.timestamp }}, {{ comment.upvotes }} points, {% endblocktrans %}
+        <small>{% blocktrans with uname=comment.user.username timestamp=comment.timestamp upvotes=comment.upvotes %}<a href="/user/{{uname}}">{{ uname }}</a> on {{ timestamp }}, <span class="points">{{ upvotes }}</span> points, {% endblocktrans %}
             <a class="upvote" data-type="comment" data-id="{{ comment.id }}"><img src="/static/thumb_up.png"></a>
+            <a class="downvote" data-type="comment" data-id="{{ comment.id }}"><img src="/static/thumb_down.png"></a>
             <p>{{ comment.text }}</p>
             <a class="ReplyBtn" data-id="{{ comment.id }}">{% trans "Reply" %}</a>
         </small>
@@ -47,8 +49,10 @@ $(document).ready(function() {
     $(".ReplyBtn").on("click", function(event){
         cmtForm = commentForm.clone();
         cmtForm.children(".parent-input").attr("value", $(this).data("id"));
+        $(".isCommented").removeClass("isCommented").remove(cmtForm);
 
         $(this).parent().append(cmtForm);
+        $(this).parent().addClass("isCommented");
     });
 });
 </script>

@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from agora.feed import LatestEntriesFeed
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -15,6 +16,14 @@ urlpatterns = patterns('',
     url(r"^submit", "agora.views.submit", name="submit"),
     url(r"^comment", "agora.views.comment", name="comment"),
     url(r"^upvote", "agora.views.upvote", name="upvote"),
+    url(r"^downvote", "agora.views.downvote", name="downvote"),
+
+    url(r"^faq", "agora.views.faq", name="faq"),
+    url(r"^featreq", "agora.views.featreq", name="featreq"),
+    url(r"^guidelines", "agora.views.guidelines", name="guidelines"),
+    url(r"^rss", LatestEntriesFeed()),
+    url(r"^lists", "agora.lists.main", name="lists"),
+
     # Examples:
     # url(r'^$', 'haknews.views.home', name='home'),
     # url(r'^haknews/', include('haknews.foo.urls')),

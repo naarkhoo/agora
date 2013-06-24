@@ -1,12 +1,16 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% block body %}
-<div class="container">
+<div class="container fontBBCNassim">
     {% for comment in comments %}
-    <div> 
-        <a class="upvote" data-type="comment" data-id="{{ comment.id }}"><img src="/static/thumb_up.png"></a>
-        <span>{% blocktrans %}By {{ comment.user.username }} on <a href="/post/{{ comment.post.id }}">{{ comment.post.title }}</a>{% endblocktrans %}</span>
-        <p>{{ comment.text }}</p>
+    <div style="direction:rtl; text-align:right; clear:both; overflow:hidden; height:38px;"> 
+        <!-- Original content 
+        <a class="upvote" data-type="comment" data-id="{{ comment.id }}"><img src="/static/thumb_up.png" style="clear: none; display:inline; float:right;"></a>
+        <a class="downvote" data-type="comment" data-id="{{ comment.id }}"><img src="/static/thumb_down.png" style="clear: none; display:inline; float:right;"></a>
+        <span style="float:right; color:#666; font-size:12px;">{% blocktrans with uname=comment.user.username cid=comment.post.id title=comment.post.title %}By {{ uname }} on <a href="/post/{{ cid }}" style="color:#555">{{ title }}</a>{% endblocktrans %}</span>
+        <p style="float:right; clear:right; margin-right:28px; margin-top:-13px; font-size:12px; font-size:14px !important; color:#333">{{ comment.text }}</p> 
+        -->
+        <span style="float:right; color:#666; font-size:12px;">{% blocktrans with uname=comment.user.username cid=comment.post.id title=comment.post.title txt=comment.text %}By <a href="/user/{{uname}}">{{ uname }}</a> on <a href="/post/{{ cid }}" style="color:#555">{{ title }}</a> {{txt}}{% endblocktrans %}</span>
     </div>
     {% endfor %}
 </div>
