@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load humanize %}
 
 {% block body %}
     <div> 
@@ -12,7 +13,7 @@
     </div>
     <div> 
         <small>
-            {% blocktrans with upvotes=post.upvotes uname=post.user.username timestamp=post.timestamp comments=post.comment_set.count pid=post.id %}
+            {% blocktrans with upvotes=post.upvotes uname=post.user.username timestamp=post.timestamp|naturaltime comments=post.comment_set.count pid=post.id %}
             <span class="points" data-id="{{pid}}">{{ upvotes }}</span> points by <a href="/user/{{ uname }}">{{ uname }}</a> on {{ timestamp }} | {{ comments }} comments
             {% endblocktrans %}
         </small>
@@ -35,7 +36,7 @@
         {% else %}
             <div class="span9" id="{{ comment.id }}"><span>{{comment.number}}</span>
         {% endif %}
-        <small>{% blocktrans with uname=comment.user.username timestamp=comment.timestamp upvotes=comment.upvotes %}<a href="/user/{{uname}}">{{ uname }}</a> on {{ timestamp }}, <span class="points">{{ upvotes }}</span> points, {% endblocktrans %}
+        <small>{% blocktrans with uname=comment.user.username timestamp=comment.timestamp|naturaltime upvotes=comment.upvotes %}<a href="/user/{{uname}}">{{ uname }}</a> on {{ timestamp }}, <span class="points">{{ upvotes }}</span> points, {% endblocktrans %}
             <a class="upvote" data-type="comment" data-id="{{ comment.id }}"><img src="/static/thumb_up.png"></a>
             <a class="downvote" data-type="comment" data-id="{{ comment.id }}"><img src="/static/thumb_down.png"></a>
             <p>{{ comment.text }}</p>

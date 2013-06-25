@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-10 14:39+0300\n"
+"POT-Creation-Date: 2013-06-25 12:27+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,21 +19,21 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: templates/base.html:43 templates/post.html:27 templates/submit.html:11
+#: templates/base.html:46 templates/post.html:27 templates/submit.html:11
 msgid "Submit"
 msgstr "شوت"
 
-#: templates/base.html:45
+#: templates/base.html:48
 msgid "Comments"
 msgstr "نظرات"
 
-#: templates/base.html:46
+#: templates/base.html:49
 msgid "New"
 msgstr "تازه ها"
 
 # This, and some of the following patterns needed to have included html code
 # Please transfer it to translated string, to its apropriate place
-#: templates/base.html:51
+#: templates/base.html:54
 #, python-format
 msgid ""
 "Logged in as <a href=\"/user/%(username)s\" class=\"navbar-link\">"
@@ -43,7 +43,7 @@ msgstr ""
 "a>\n"
 " "
 
-#: templates/base.html:53 templates/login.html:10
+#: templates/base.html:56 templates/login.html:10
 msgid "Login"
 msgstr "ورود"
 
@@ -54,10 +54,12 @@ msgid ""
 msgstr "نظر %(uname)s در مورد <a href=\"/post/%(cid)s\">%(title)s</a>"
 
 #: templates/comments.html:13
-#, python-format
-msgid "By %(uname)s on <a href=\"/post/%(cid)s\" style=\"color:#555\">%(title)s</a> "
-"%(txt)s"
-msgstr " <a href=\"/post/%(cid)s\">%(title)s</a> %(txt)s نظر %(uname)s در مورد "
+#, fuzzy, python-format
+msgid ""
+"By <a href=\"/user/%(uname)s\">%(uname)s</a> on <a href=\"/post/%(cid)s\" "
+"style=\"color:#555\">%(title)s</a> %(txt)s"
+msgstr ""
+" <a href=\"/post/%(cid)s\">%(title)s</a> %(txt)s نظر <a href=\"/user/%(uname)s\">%(uname)s</a> در مورد "
 
 #: templates/login.html:8 templates/login.html.py:14
 msgid "Username"
@@ -84,20 +86,20 @@ msgstr "نظر شما چیه ؟"
 #: templates/post.html:38
 #, python-format
 msgid ""
-"%(uname)s on %(timestamp)s, <span class=\"points\">%(upvotes)s</span> "
-"points, "
+"<a href=\"/user/%(uname)s\">%(uname)s</a> on %(timestamp)s, <span class="
+"\"points\">%(upvotes)s</span> points, "
 msgstr ""
 
 #: templates/post.html:42
 msgid "Reply"
 msgstr "پاسخ"
 
-#: templates/posts.html:11
+#: templates/posts.html:12
 #, python-format
 msgid ""
-"<span class=\"points\" data-id=\"%(pid)s\">%(upvotes)s</span> points by "
-"%(uname)s on %(timestamp)s | <a href=\"/post/%(id)s/\"  style=\"color:#333\">"
-"%(comments)s comments </a>"
+"<span class=\"points\" data-id=\"%(pid)s\">%(upvotes)s</span> points by <a "
+"href=\"/user/%(uname)s\">%(uname)s</a> on %(timestamp)s | <a href=\"/post/"
+"%(id)s/\"  style=\"color:#333\">%(comments)s comments </a>"
 msgstr ""
 
 #: templates/submit.html:8
