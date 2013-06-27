@@ -6,6 +6,7 @@ from urlparse import urlparse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as lin, authenticate, logout as lg
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from django.core.context_processors import csrf
 from django.http import HttpResponse
 from agora.models import Karma, Post, Comment, CommentVotes, PostVotes
@@ -84,62 +85,62 @@ def register(request):
     lin(request, user)
     return redirect("/")
 
+@login_required
 def comment(request):
     """Adds a comment to a post."""
-    if request.user.is_authenticated:
-        post_id = int(request.POST['post'])
-        parent_id = int(request.POST['parent'])
-        user_id = int(request.POST['user'])
-        text = request.POST['text']
-        if parent_id != 0:
-            parent = Comment.objects.get(pk=parent_id)
-            depth = parent.depth + 1
-        else:
-            depth = 0
-        post = Post.objects.get(pk=post_id)
-        user = User.objects.get(pk=user_id)
-        cmt = Comment(post=post, user=user, depth=depth, text=text, parent=parent_id)
-        cmt.save()
+    post_id = int(request.POST['post'])
+    parent_id = int(request.POST['parent'])
+    user_id = int(request.POST['user'])
+    text = request.POST['text']
+    if parent_id != 0:
+        parent = Comment.objects.get(pk=parent_id)
+        depth = parent.depth + 1
+    else:
+        depth = 0
+    post = Post.objects.get(pk=post_id)
+    user = User.objects.get(pk=user_id)
+    cmt = Comment(post=post, user=user, depth=depth, text=text, parent=parent_id)
+    cmt.save()
     return redirect("/post/%d" % post_id)
 
+@login_required
 def upvote(request):
-    if request.user.is_authenticated:
-        tip = request.POST['type']
-        obj = request.POST['id']
-        if tip == "comment":
-            comment = Comment.objects.get(pk=obj)
-            if request.user != comment.user and CommentVotes.objects.filter(user=request.user, comment=comment).count() == 0:
-                comment.upvotes += 1
-                comment.save()
-                CommentVotes(user=request.user, comment=comment).save()
-            result = str(comment.upvotes)
-        elif tip == "post":
-            post = Post.objects.get(pk=obj)
-            if request.user != post.user and PostVotes.objects.filter(user=request.user, post=post).count() == 0:
-                post.upvotes += 1
-                post.save()
-                PostVotes(user=request.user, post=post).save()
-            result = str(post.upvotes)
+    tip = request.POST['type']
+    obj = request.POST['id']
+    if tip == "comment":
+        comment = Comment.objects.get(pk=obj)
+        if request.user != comment.user and CommentVotes.objects.filter(user=request.user, comment=comment).count() == 0:
+            comment.upvotes += 1
+            comment.save()
+            CommentVotes(user=request.user, comment=comment).save()
+        result = str(comment.upvotes)
+    elif tip == "post":
+        post = Post.objects.get(pk=obj)
+        if request.user != post.user and PostVotes.objects.filter(user=request.user, post=post).count() == 0:
+            post.upvotes += 1
+            post.save()
+            PostVotes(user=request.user, post=post).save()
+        result = str(post.upvotes)
     return HttpResponse(result)
 
+@login_required
 def downvote(request):
-    if request.user.is_authenticated:
-        tip = request.POST['type']
-        obj = request.POST['id']
-        if tip == "comment":
-            comment = Comment.objects.get(pk=obj)
-            if request.user != comment.user and CommentVotes.objects.filter(user=request.user, comment=comment).count() == 0:
-                comment.upvotes -= 1
-                comment.save()
-                CommentVotes(user=request.user, comment=comment, isPositive=False).save()
-            result = str(comment.upvotes)
-        elif tip == "post":
-            post = Post.objects.get(pk=obj)
-            if request.user != post.user and PostVotes.objects.filter(user=request.user, post=post).count() == 0:
-                post.upvotes -= 1
-                post.save()
-                PostVotes(user=request.user, post=post, isPositive=False).save()
-            result = str(post.upvotes)
+    tip = request.POST['type']
+    obj = request.POST['id']
+    if tip == "comment":
+        comment = Comment.objects.get(pk=obj)
+        if request.user != comment.user and CommentVotes.objects.filter(user=request.user, comment=comment).count() == 0:
+            comment.upvotes -= 1
+            comment.save()
+            CommentVotes(user=request.user, comment=comment, isPositive=False).save()
+        result = str(comment.upvotes)
+    elif tip == "post":
+        post = Post.objects.get(pk=obj)
+        if request.user != post.user and PostVotes.objects.filter(user=request.user, post=post).count() == 0:
+            post.upvotes -= 1
+            post.save()
+            PostVotes(user=request.user, post=post, isPositive=False).save()
+        result = str(post.upvotes)
     return HttpResponse(result)
 
 @set_language
