@@ -26,18 +26,53 @@
           .btn {
             float: left;
           }
-          .navbar-inner
-          {
-              background-color:#ff6600 !important;
+          #notifications-display {
+              position: absolute;
+              top: 40px;
+              left: 200px;
+              width: 300px;
+              height 360px;
+              /* width: 400; */
+              /* height: 470; */
+              border: 1px solid #CCCCCC;
+              background: none repeat scroll 0 0 #FFFFFF;
           }
-          a {
-            color: #bababa;
-        }
+          .notification-element {
+              border: 1px solid #CCCCCC;
+          }
+        /*   .navbar-inner */
+        /*   { */
+        /*       background-color:#ff6600 !important; */
+        /*   } */
+        /*   a { */
+        /*     color: #bababa; */
+        /* } */
         </style>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script src="/static/jquery.cookie.js"></script>
     </head>
     <body>
+        {% if user.is_authenticated %}
+        <div id="notifications-display" style="display: None">
+            {% with unread=user.notifications.unread read=user.notifications.read %}
+            {% with notifications=unread %}
+                {% if notifications|length > 0 %}
+                    {% for msg in notifications %}
+                    <div class="notification-element">
+                        <p>
+                            <a href="/user/{{msg.actor.username}}">{{msg.actor.username}}</a> 
+                            <a href="/post/{{msg.target.id}}?note={{msg.id}}#comment{{msg.action_object.id}}">{{msg.verb}}</a>
+                        </p>
+                        <p>{{msg.action_object.text|truncatechars:200}}</p>
+                        on <a href="/post/{{msg.target.id}}">{{ msg.target.title }}</a></div>
+                    {% endfor %}
+                {% else %}
+                    Sorry, you have no messages.
+                {% endif %}
+            {% endwith %}
+            {% endwith %}
+        </div>
+        {% endif %}
         <div class="navbar navbar navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container">
@@ -52,6 +87,7 @@
                         </ul>
                         <p class="navbar-text pull-left">
                         {% if user.is_authenticated %}
+                            {{ user.notifications.unread|length }}
                         <a href="#" id="messages"><img src="/static/messages.png"></img></a>
             {% blocktrans with user.username as username %}Logged in as <a href="/user/{{ username }}" class="navbar-link">{{ username }}</a>{% endblocktrans %}
                         {% else %}
@@ -94,6 +130,9 @@ $(document).ready(function() {
             var pid = vote.data("id");
             vote.parent().find(".points[data-id=" + pid + "]").text(upvotes);
         });
+    });
+    $("#messages").on("click", function(event){
+        $("#notifications-display").slideToggle();
     });
 });
 </script>

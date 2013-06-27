@@ -9,6 +9,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.core.context_processors import csrf
 from django.http import HttpResponse
+
+from notifications import notify
 from agora.models import Karma, Post, Comment, CommentVotes, PostVotes
 
 today = date.today()
@@ -99,8 +101,15 @@ def comment(request):
         depth = 0
     post = Post.objects.get(pk=post_id)
     user = User.objects.get(pk=user_id)
+    print user.notifications.unread()
+    print '*****************************'
     cmt = Comment(post=post, user=user, depth=depth, text=text, parent=parent_id)
     cmt.save()
+
+    # Lets notify OP and commenters
+    notify.send(cmt.user, recipient=post.user, verb=u'commented',
+                action_object=cmt, target=post)
+
     return redirect("/post/%d" % post_id)
 
 @login_required
@@ -179,6 +188,7 @@ def user(request, username):
 def post(request, post_id):
     p = Post.objects.get(pk=post_id)
     comments = sorted(p.comment_set.all().order_by("timestamp"), key=lambda x: x.parent)
+    print request.GET.get('note')
 
     # Pretty shitty situation with top level comments
     # Since they all have parent=0 they will be incorrectly grouped

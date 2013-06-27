@@ -36,6 +36,7 @@
         {% else %}
             <div class="span9" id="{{ comment.id }}"><span>{{comment.number}}</span>
         {% endif %}
+        <a name="comment{{comment.id}}"></a>
         <small>{% blocktrans with uname=comment.user.username timestamp=comment.timestamp|naturaltime upvotes=comment.upvotes %}<a href="/user/{{uname}}">{{ uname }}</a> on {{ timestamp }}, <span class="points">{{ upvotes }}</span> points, {% endblocktrans %}
             <a class="upvote" data-type="comment" data-id="{{ comment.id }}"><img src="/static/thumb_up.png"></a>
             <a class="downvote" data-type="comment" data-id="{{ comment.id }}"><img src="/static/thumb_down.png"></a>
@@ -48,12 +49,9 @@
 $(document).ready(function() {
     commentForm = $("#comment-form").clone();
     $(".ReplyBtn").on("click", function(event){
-        cmtForm = commentForm.clone();
+        var cmtForm = $('#comment-form').detach();
         cmtForm.children(".parent-input").attr("value", $(this).data("id"));
-        $(".isCommented").removeClass("isCommented").remove(cmtForm);
-
         $(this).parent().append(cmtForm);
-        $(this).parent().addClass("isCommented");
     });
 });
 </script>
