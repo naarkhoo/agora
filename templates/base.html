@@ -1,38 +1,97 @@
 {% load i18n %}
+{% load humanize %}
 <!DOCTYPE html>
 <html>
     <head>
-        <link href="/static/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="/static/bootstrap-light.min.css" rel="stylesheet" media="screen">
         <link href="/static/margins.css" rel="stylesheet" media="screen">
         <style type="text/css">
           body {
+            direction: rtl;
+            unicode-bidi: embed;
             padding-top: 60px;
             padding-bottom: 40px;
+            padding-right: 40px;
+            float: right;
           }
+          span {
+            float: right;
+          }
+          .span6 {
+            float: right;
+          }
+          .span9 {
+            float: right;
+          }
+          .btn {
+            float: left;
+          }
+          #notifications-display {
+              position: absolute;
+              top: 40px;
+              left: 200px;
+              width: 300px;
+              height 360px;
+              /* width: 400; */
+              /* height: 470; */
+              border: 1px solid #CCCCCC;
+              background: none repeat scroll 0 0 #FFFFFF;
+          }
+          .notification-element {
+              border: 1px solid #CCCCCC;
+          }
+        /*   .navbar-inner */
+        /*   { */
+        /*       background-color:#ff6600 !important; */
+        /*   } */
+        /*   a { */
+        /*     color: #bababa; */
+        /* } */
         </style>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script src="/static/jquery.cookie.js"></script>
     </head>
     <body>
-        <div class="navbar navbar-inverse navbar-fixed-top">
+        {% if user.is_authenticated %}
+        <div id="notifications-display" style="display: None">
+            {% with unread=user.notifications.unread read=user.notifications.read %}
+            {% with notifications=unread %}
+                {% if notifications|length > 0 %}
+                    {% for msg in notifications %}
+                    <div class="notification-element">
+                        <p>
+                            <a href="/user/{{msg.actor.username}}">{{msg.actor.username}}</a> 
+                            <a href="/post/{{msg.target.id}}?note={{msg.id}}#comment{{msg.action_object.id}}">{{msg.verb}}</a>
+                        </p>
+                        <p>{{msg.action_object.text|truncatechars:200}}</p>
+                        on <a href="/post/{{msg.target.id}}">{{ msg.target.title }}</a></div>
+                    {% endfor %}
+                {% else %}
+                    Sorry, you have no messages.
+                {% endif %}
+            {% endwith %}
+            {% endwith %}
+        </div>
+        {% endif %}
+        <div class="navbar navbar navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container">
-                    <a class="brand" href="/">Hacking News...</a>
                     <div class="nav-collapse collapse">
-                        <ul class="nav">
-                            <li><a href="/new">{% trans "New" %}</a></li>
-                            <li><a href="/newcomments">{% trans "Comments" %}</a></li>
+                        <ul class="nav pull-right">
                             {% if user.is_authenticated %}
                             <li><a href="/submit">{% trans "Submit" %}</a></li>
                             {% endif %}
+                            <li><a href="/newcomments">{% trans "Comments" %}</a></li>
+                            <li><a href="/new">{% trans "New" %}</a></li>
+                            <a class="brand" href="/">Hacking News...</a>
                         </ul>
-                        <p class="navbar-text pull-right">
+                        <p class="navbar-text pull-left">
                         {% if user.is_authenticated %}
-                        {% blocktrans %}
-                        Logged in as <a href="/user/{{ user.username }}" class="navbar-link">{{ user.username }}</a>
-                        {% endblocktrans %}
+                            {{ user.notifications.unread|length }}
+                        <a href="#" id="messages"><img src="/static/messages.png"></img></a>
+            {% blocktrans with user.username as username %}Logged in as <a href="/user/{{ username }}" class="navbar-link">{{ username }}</a>{% endblocktrans %}
                         {% else %}
-                        <a href="login" class="navbar-link">{% trans "Login" %}</a>
+                        <a href="/login" class="navbar-link">{% trans "Login" %}</a>
                         {% endif %}
                         </p>
                     </div><!--/.nav-collapse -->
@@ -44,8 +103,13 @@
             {% endblock %}
         </div>
         <footer>
-            <div class="container">
+            <div class="container text-center">
                 <hr>
+                <a href="/lists">Lists</a> |
+                <a href="/rss">RSS</a> |
+                <a href="/guidelines">Guidelines</a> | 
+                <a href="/faq">FAQ</a> | 
+                <a href="/featreq">Feature Request</a>
                 <p>&copy; Dmitrii Prihodco 2013</p>
             </div>
         </footer>
@@ -54,10 +118,21 @@ $(document).ready(function() {
     $(".upvote").on("click", function(event){
         var vote = $(this);
         var csrftoken = $.cookie('csrftoken');
-        console.log(vote);
-        $.post("/upvote", {"type":vote.data("type"), "id": vote.data("id"), "csrfmiddlewaretoken": csrftoken}).done(function() {
-            console.log("done");
+        $.post("/upvote", {"type":vote.data("type"), "id": vote.data("id"), "csrfmiddlewaretoken": csrftoken}).done(function(upvotes) {
+            var pid = vote.data("id");
+            vote.parent().find(".points[data-id=" + pid + "]").text(upvotes);
         });
+    });
+    $(".downvote").on("click", function(event){
+        var vote = $(this);
+        var csrftoken = $.cookie('csrftoken');
+        $.post("/downvote", {"type":vote.data("type"), "id": vote.data("id"), "csrfmiddlewaretoken": csrftoken}).done(function(upvotes) {
+            var pid = vote.data("id");
+            vote.parent().find(".points[data-id=" + pid + "]").text(upvotes);
+        });
+    });
+    $("#messages").on("click", function(event){
+        $("#notifications-display").slideToggle();
     });
 });
 </script>
