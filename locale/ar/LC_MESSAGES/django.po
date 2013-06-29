@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-25 12:27+0300\n"
+"POT-Creation-Date: 2013-06-29 17:57+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,21 +19,25 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: templates/base.html:46 templates/post.html:27 templates/submit.html:11
+#: templates/base.html:69
+msgid "Mark all as read."
+msgstr ""
+
+#: templates/base.html:83 templates/post.html:28 templates/submit.html:11
 msgid "Submit"
 msgstr "شوت"
 
-#: templates/base.html:48
+#: templates/base.html:85
 msgid "Comments"
 msgstr "نظرات"
 
-#: templates/base.html:49
+#: templates/base.html:86
 msgid "New"
 msgstr "تازه ها"
 
 # This, and some of the following patterns needed to have included html code
 # Please transfer it to translated string, to its apropriate place
-#: templates/base.html:54
+#: templates/base.html:93
 #, python-format
 msgid ""
 "Logged in as <a href=\"/user/%(username)s\" class=\"navbar-link\">"
@@ -43,7 +47,7 @@ msgstr ""
 "a>\n"
 " "
 
-#: templates/base.html:56 templates/login.html:10
+#: templates/base.html:95 templates/login.html:10
 msgid "Login"
 msgstr "ورود"
 
@@ -59,7 +63,8 @@ msgid ""
 "By <a href=\"/user/%(uname)s\">%(uname)s</a> on <a href=\"/post/%(cid)s\" "
 "style=\"color:#555\">%(title)s</a> %(txt)s"
 msgstr ""
-" <a href=\"/post/%(cid)s\">%(title)s</a> %(txt)s نظر <a href=\"/user/%(uname)s\">%(uname)s</a> در مورد "
+" <a href=\"/post/%(cid)s\">%(title)s</a> %(txt)s نظر <a href=\"/user/"
+"%(uname)s\">%(uname)s</a> در مورد "
 
 #: templates/login.html:8 templates/login.html.py:14
 msgid "Username"
@@ -69,7 +74,11 @@ msgstr "نام کاربری"
 msgid "Password"
 msgstr "گذرواژه"
 
-#: templates/post.html:15
+#: templates/login.html:16
+msgid "Register"
+msgstr ""
+
+#: templates/post.html:16
 #, python-format
 msgid ""
 "\n"
@@ -79,22 +88,22 @@ msgid ""
 "            "
 msgstr ""
 
-#: templates/post.html:23
+#: templates/post.html:24
 msgid "Add a comment"
 msgstr "نظر شما چیه ؟"
 
-#: templates/post.html:38
+#: templates/post.html:40
 #, python-format
 msgid ""
 "<a href=\"/user/%(uname)s\">%(uname)s</a> on %(timestamp)s, <span class="
 "\"points\">%(upvotes)s</span> points, "
 msgstr ""
 
-#: templates/post.html:42
+#: templates/post.html:44
 msgid "Reply"
 msgstr "پاسخ"
 
-#: templates/posts.html:12
+#: templates/posts.html:14
 #, python-format
 msgid ""
 "<span class=\"points\" data-id=\"%(pid)s\">%(upvotes)s</span> points by <a "
@@ -125,3 +134,10 @@ msgstr "تعداد پست ها"
 #: templates/user.html:17
 msgid "Comments count"
 msgstr "تعداد نظرات"
+
+# TODO Needs translation
+#~ msgid "commented"
+#~ msgstr "Commented"
+
+#~ msgid "also commented"
+#~ msgstr "also commented"

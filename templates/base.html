@@ -58,14 +58,15 @@
             {% with notifications=unread %}
                 {% if notifications|length > 0 %}
                     {% for msg in notifications %}
-                    <div class="notification-element">
+                    <div class="notification-element info">
                         <p>
                             <a href="/user/{{msg.actor.username}}">{{msg.actor.username}}</a> 
-                            <a href="/post/{{msg.target.id}}?note={{msg.id}}#comment{{msg.action_object.id}}">{{msg.verb}}</a>
+                            <a href="/post/{{msg.target.id}}?note={{msg.id}}#comment{{msg.action_object.id}}">{% trans msg.verb %}</a>
                         </p>
                         <p>{{msg.action_object.text|truncatechars:200}}</p>
                         on <a href="/post/{{msg.target.id}}">{{ msg.target.title }}</a></div>
                     {% endfor %}
+                    <small><a href="#" class="btn btn-warning" id="read-all">{% trans "Mark all as read."%}</a></small>
                 {% else %}
                     Sorry, you have no messages.
                 {% endif %}
@@ -133,6 +134,12 @@ $(document).ready(function() {
     });
     $("#messages").on("click", function(event){
         $("#notifications-display").slideToggle();
+    });
+    $("#read-all").on("click", function(event) {
+        var csrftoken = $.cookie('csrftoken');
+        $.post("/notifications/read-all", { "csrfmiddlewaretoken":csrftoken}).done(function() {
+            $("#notifications-display").html("Sorry no new messages.");
+        });
     });
 });
 </script>

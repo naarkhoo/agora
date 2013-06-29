@@ -23,6 +23,7 @@ urlpatterns = patterns('',
     url(r"^guidelines", "agora.views.guidelines", name="guidelines"),
     url(r"^rss", LatestEntriesFeed()),
     url(r"^lists", "agora.lists.main", name="lists"),
+    url(r"^notifications/read-all", "agora.views.read_all"),
 
     # Examples:
     # url(r'^$', 'haknews.views.home', name='home'),
