@@ -1,6 +1,7 @@
 # Create your views here.
 from datetime import date, timedelta
 from urlparse import urlparse
+import re
 # from urlparse import urlparse
 
 from django.shortcuts import render, redirect
@@ -16,6 +17,7 @@ from agora.models import Karma, Post, Comment, CommentVotes, PostVotes
 
 today = date.today()
 posts_limit = today - timedelta(days=3)
+
 
 def set_language(view):
     def wrapped(*args, **kwargs):
@@ -105,13 +107,24 @@ def comment(request):
     cmt = Comment(post=post, user=user, depth=depth, text=text, parent=parent_id)
     cmt.save()
 
+    # Lets see if user called someone
+    called = [x[1:] for x in re.findall(r"@[\w\.\+\-\_\@]{6,30}",text,re.L|re.U)]
+    called = User.objects.get(username__in=called)
+    if isinstance(called, User):
+        notify.send(cmt.user, recipient=called, verb=u'called you',
+                    action_object=cmt, target=post)
+    else:
+        for u in called:
+            notify.send(cmt.user, recipient=u, verb=u'called you',
+                        action_object=cmt, target=post)
+
     # Lets notify OP and commenters
     notified = set()  # A set of those who should be informed
     obj = cmt
     while obj.parent != 0:
         parent = Comment.objects.get(pk=obj.parent)
         obj = parent
-        notified.add(obj.usr)
+        notified.add(obj.user)
     if cmt.user in notified:
         notified.remove(cmt.user)
     for user in notified:
