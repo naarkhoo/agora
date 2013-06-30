@@ -80,13 +80,14 @@ def login(request):
 @set_language
 def logout(request):
     lg(request)
+    return redirect("/")
 
 def register(request):
     username = request.POST['name']
     password = request.POST['pass']
     user = User.objects.create_user(username=username, password=password)
     user.save()
-    authenticate(username, password)
+    user = authenticate(username=username, password=password)
     lin(request, user)
     return redirect("/")
 
