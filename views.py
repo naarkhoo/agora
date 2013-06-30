@@ -1,6 +1,7 @@
 # Create your views here.
 from datetime import date, timedelta
 from urlparse import urlparse
+import re
 # from urlparse import urlparse
 
 from django.shortcuts import render, redirect
@@ -11,10 +12,12 @@ from django.core.context_processors import csrf
 from django.http import HttpResponse
 
 from notifications import notify
+from notifications.models import Notification
 from agora.models import Karma, Post, Comment, CommentVotes, PostVotes
 
 today = date.today()
 posts_limit = today - timedelta(days=3)
+
 
 def set_language(view):
     def wrapped(*args, **kwargs):
@@ -77,13 +80,14 @@ def login(request):
 @set_language
 def logout(request):
     lg(request)
+    return redirect("/")
 
 def register(request):
     username = request.POST['name']
     password = request.POST['pass']
     user = User.objects.create_user(username=username, password=password)
     user.save()
-    authenticate(username, password)
+    user = authenticate(username=username, password=password)
     lin(request, user)
     return redirect("/")
 
@@ -101,14 +105,37 @@ def comment(request):
         depth = 0
     post = Post.objects.get(pk=post_id)
     user = User.objects.get(pk=user_id)
-    print user.notifications.unread()
-    print '*****************************'
     cmt = Comment(post=post, user=user, depth=depth, text=text, parent=parent_id)
     cmt.save()
 
+    # Lets see if user called someone
+    called = [x[1:] for x in re.findall(r"@[\w\.\+\-\_\@]{6,30}",text,re.L|re.U)]
+    called = User.objects.get(username__in=called)
+    if isinstance(called, User):
+        notify.send(cmt.user, recipient=called, verb=u'called you',
+                    action_object=cmt, target=post)
+    else:
+        for u in called:
+            notify.send(cmt.user, recipient=u, verb=u'called you',
+                        action_object=cmt, target=post)
+
     # Lets notify OP and commenters
-    notify.send(cmt.user, recipient=post.user, verb=u'commented',
-                action_object=cmt, target=post)
+    notified = set()  # A set of those who should be informed
+    obj = cmt
+    while obj.parent != 0:
+        parent = Comment.objects.get(pk=obj.parent)
+        obj = parent
+        notified.add(obj.user)
+    if cmt.user in notified:
+        notified.remove(cmt.user)
+    for user in notified:
+        notify.send(cmt.user, recipient=user, verb=u'also commented',
+                    action_object=cmt, target=post)
+
+    if post.user not in notified and post.user != cmt.user:
+        notify.send(cmt.user, recipient=post.user, verb=u'commented',
+                    action_object=cmt, target=post)
+
 
     return redirect("/post/%d" % post_id)
 
@@ -152,22 +179,25 @@ def downvote(request):
         result = str(post.upvotes)
     return HttpResponse(result)
 
+@login_required
+def read_all(request):
+    request.user.notifications.unread().mark_all_as_read()
+    return HttpResponse("Success")
+
 @set_language
+@login_required
 def submit(request):
-    if request.user.is_authenticated:
-        if request.method == 'GET':
-            return render(request, 'submit.html')
-        else:
-            url = request.POST['url']
-            url = check_url(url)
-            title = request.POST['title']
-            text = request.POST['text']
-            p = Post(url=url, title=title, text=text,
-                     user=User.objects.get(pk=request.user.id))
-            p.save()
-            return redirect("/post/%d" % p.id)
+    if request.method == 'GET':
+        return render(request, 'submit.html')
     else:
-        return redirect("/")
+        url = request.POST['url']
+        url = check_url(url)
+        title = request.POST['title']
+        text = request.POST['text']
+        p = Post(url=url, title=title, text=text,
+                 user=User.objects.get(pk=request.user.id))
+        p.save()
+        return redirect("/post/%d" % p.id)
 
 @set_language
 def user(request, username):
@@ -188,7 +218,16 @@ def user(request, username):
 def post(request, post_id):
     p = Post.objects.get(pk=post_id)
     comments = sorted(p.comment_set.all().order_by("timestamp"), key=lambda x: x.parent)
-    print request.GET.get('note')
+    # If user came here because of notification, lets mark it as read
+    note = request.GET.get('note')
+    if note:
+        try:
+            notification = Notification.objects.get(pk=int(note))
+            if request.user.is_authenticated and \
+               notification.recipient == request.user:
+                notification.mark_as_read()
+        except:
+            pass
 
     # Pretty shitty situation with top level comments
     # Since they all have parent=0 they will be incorrectly grouped
