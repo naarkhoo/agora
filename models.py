@@ -35,9 +35,9 @@ class Karma(BaseItem):
 class CommentVotes(models.Model):
     user = models.ForeignKey(User)
     comment = models.ForeignKey(Comment)
-    isPositive = models.BooleanField(default=True)
+    is_positive = models.BooleanField(default=True)
 
 class PostVotes(models.Model):
     user = models.ForeignKey(User)
     post = models.ForeignKey(Post)
-    isPositive = models.BooleanField(default=True)
+    is_positive = models.BooleanField(default=True)

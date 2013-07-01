@@ -155,14 +155,14 @@ def upvote(request):
         if request.user != comment.user and CommentVotes.objects.filter(user=request.user, comment=comment).count() == 0:
             comment.upvotes += 1
             comment.save()
-            CommentVotes(user=request.user, comment=comment).save()
+            CommentVotes(user=request.user, comment=comment, is_positive=True).save()
         result = str(comment.upvotes)
     elif tip == "post":
         post = Post.objects.get(pk=obj)
         if request.user != post.user and PostVotes.objects.filter(user=request.user, post=post).count() == 0:
             post.upvotes += 1
             post.save()
-            PostVotes(user=request.user, post=post).save()
+            PostVotes(user=request.user, post=post, is_positive=True).save()
         result = str(post.upvotes)
     return HttpResponse(result)
 
@@ -175,14 +175,14 @@ def downvote(request):
         if request.user != comment.user and CommentVotes.objects.filter(user=request.user, comment=comment).count() == 0:
             comment.upvotes -= 1
             comment.save()
-            CommentVotes(user=request.user, comment=comment, isPositive=False).save()
+            CommentVotes(user=request.user, comment=comment, is_positive=False).save()
         result = str(comment.upvotes)
     elif tip == "post":
         post = Post.objects.get(pk=obj)
         if request.user != post.user and PostVotes.objects.filter(user=request.user, post=post).count() == 0:
             post.upvotes -= 1
             post.save()
-            PostVotes(user=request.user, post=post, isPositive=False).save()
+            PostVotes(user=request.user, post=post, is_positive=False).save()
         result = str(post.upvotes)
     return HttpResponse(result)
 
