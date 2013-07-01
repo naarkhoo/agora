@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-29 17:57+0300\n"
+"POT-Creation-Date: 2013-07-01 14:55+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,25 +19,25 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: templates/base.html:69
+#: templates/base.html:99
 msgid "Mark all as read."
 msgstr ""
 
-#: templates/base.html:83 templates/post.html:28 templates/submit.html:11
+#: templates/base.html:113 templates/post.html:28 templates/submit.html:11
 msgid "Submit"
 msgstr "شوت"
 
-#: templates/base.html:85
+#: templates/base.html:115
 msgid "Comments"
 msgstr "نظرات"
 
-#: templates/base.html:86
+#: templates/base.html:116
 msgid "New"
 msgstr "تازه ها"
 
 # This, and some of the following patterns needed to have included html code
 # Please transfer it to translated string, to its apropriate place
-#: templates/base.html:93
+#: templates/base.html:126
 #, python-format
 msgid ""
 "Logged in as <a href=\"/user/%(username)s\" class=\"navbar-link\">"
@@ -47,18 +47,51 @@ msgstr ""
 "a>\n"
 " "
 
-#: templates/base.html:95 templates/login.html:10
+#: templates/base.html:129 templates/login.html:10
 msgid "Login"
 msgstr "ورود"
 
+#: templates/base.html:143
+msgid "Lists"
+msgstr ""
+
+#: templates/base.html:144
+msgid "RSS"
+msgstr ""
+
+#: templates/base.html:145
+msgid "Guidelines"
+msgstr ""
+
+#: templates/base.html:146
+msgid "FAQ"
+msgstr ""
+
+#: templates/base.html:147
+msgid "Feature Request"
+msgstr ""
+
+# TODO Needs translation
+#: templates/base.html:179
+msgid "commented"
+msgstr "Commented"
+
+#: templates/base.html:180
+msgid "also commented"
+msgstr "also commented"
+
+#: templates/base.html:181
+msgid "called you"
+msgstr ""
+
 #: templates/comments.html:10
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "By %(uname)s on <a href=\"/post/%(cid)s\" style=\"color:#555\">%(title)s</a>"
 msgstr "نظر %(uname)s در مورد <a href=\"/post/%(cid)s\">%(title)s</a>"
 
 #: templates/comments.html:13
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "By <a href=\"/user/%(uname)s\">%(uname)s</a> on <a href=\"/post/%(cid)s\" "
 "style=\"color:#555\">%(title)s</a> %(txt)s"
@@ -82,9 +115,9 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"            <span class=\"points\" data-id=\"%(pid)s\">%(upvotes)s</span> "
-"points by <a href=\"/user/%(uname)s\">%(uname)s</a> on %(timestamp)s | "
-"%(comments)s comments\n"
+"            <strong class=\"points\" data-type=\"post\" data-id=\"%(pid)s\">"
+"%(upvotes)s</strong> points by <a href=\"/user/%(uname)s\">%(uname)s</a> on "
+"%(timestamp)s | %(comments)s comments\n"
 "            "
 msgstr ""
 
@@ -93,11 +126,15 @@ msgid "Add a comment"
 msgstr "نظر شما چیه ؟"
 
 #: templates/post.html:40
-#, python-format
+#,  python-format
 msgid ""
-"<a href=\"/user/%(uname)s\">%(uname)s</a> on %(timestamp)s, <span class="
-"\"points\">%(upvotes)s</span> points, "
+"<a href=\"/user/%(uname)s\">%(uname)s</a> on %(timestamp)s, <strong class="
+"\"points\" data-type=\"comment\" data-id=\"%(cid)s\">%(upvotes)s</strong> "
+"points, "
 msgstr ""
+"<a href=\"/user/%(uname)s\">%(uname)s</a> گفت %(timestamp)s, "
+"<strong class=\"points\" data-type=\"comment\" data-id=\"%(cid)s\">"
+"%(upvotes)s</strong> موافق"
 
 #: templates/post.html:44
 msgid "Reply"
@@ -106,9 +143,9 @@ msgstr "پاسخ"
 #: templates/posts.html:14
 #, python-format
 msgid ""
-"<span class=\"points\" data-id=\"%(pid)s\">%(upvotes)s</span> points by <a "
-"href=\"/user/%(uname)s\">%(uname)s</a> on %(timestamp)s | <a href=\"/post/"
-"%(id)s/\"  style=\"color:#333\">%(comments)s comments </a>"
+"<strong class=\"points\" data-type=\"post\" data-id=\"%(pid)s\">%(upvotes)s</"
+"strong> points by <a href=\"/user/%(uname)s\">%(uname)s</a> on %(timestamp)s "
+"| <a href=\"/post/%(id)s/\">%(comments)s comments </a>"
 msgstr ""
 
 #: templates/submit.html:8
@@ -135,9 +172,5 @@ msgstr "تعداد پست ها"
 msgid "Comments count"
 msgstr "تعداد نظرات"
 
-# TODO Needs translation
-#~ msgid "commented"
-#~ msgstr "Commented"
-
-#~ msgid "also commented"
-#~ msgstr "also commented"
+#~ msgid "ago"
+#~ msgstr "پیش"

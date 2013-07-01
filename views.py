@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 # Create your views here.
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from urlparse import urlparse
 import re
 # from urlparse import urlparse
@@ -9,7 +10,9 @@ from django.contrib.auth import login as lin, authenticate, logout as lg
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.core.context_processors import csrf
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
+from django.contrib.humanize.templatetags.humanize import naturaltime
 
 from notifications import notify
 from notifications.models import Notification
@@ -109,15 +112,19 @@ def comment(request):
     cmt.save()
 
     # Lets see if user called someone
-    called = [x[1:] for x in re.findall(r"@[\w\.\+\-\_\@]{6,30}",text,re.L|re.U)]
-    called = User.objects.get(username__in=called)
-    if isinstance(called, User):
-        notify.send(cmt.user, recipient=called, verb=u'called you',
-                    action_object=cmt, target=post)
-    else:
-        for u in called:
-            notify.send(cmt.user, recipient=u, verb=u'called you',
-                        action_object=cmt, target=post)
+    called = [x[1:] for x in re.findall(r"@[\w\.\+\-\_\@]{1,30}",text,re.L|re.U)]
+    if len(called) > 0:
+        try:
+            called = User.objects.get(username__in=called)
+            if isinstance(called, User):
+                notify.send(cmt.user, recipient=called, verb=u'called you',
+                            action_object=cmt, target=post)
+            else:
+                for u in called:
+                    notify.send(cmt.user, recipient=u, verb=u'called you',
+                                action_object=cmt, target=post)
+        except ObjectDoesNotExist:
+            pass
 
     # Lets notify OP and commenters
     notified = set()  # A set of those who should be informed
@@ -250,11 +257,54 @@ def post(request, post_id):
         for child in children:
             all_comments.insert(all_comments.index(parent)+1, child)
 
+    # Lets humanize the dates
+    today = datetime.today()
+    if today - p.timestamp.replace(tzinfo=None) < timedelta(days=1):
+        p.timestamp = naturaltime(p.timestamp)
+        p.timestamp = convert_time_to_arabic(p.timestamp)
+        # If it was in one day, so did its comments
+        for comment in all_comments:
+            comment.timestamp = naturaltime(comment.timestamp)
+            comment.timestamp = convert_time_to_arabic(comment.timestamp)
+    else:
+        for comment in all_comments:
+            if today - comment.timestamp.replace(tzinfo=None) < timedelta(days=1):
+                comment.timestamp = naturaltime(comment.timestamp)
+                comment.timestamp = convert_time_to_arabic(comment.timestamp)
+
+    commenters = set()
+    for comment in comments:
+        commenters.add(comment.user)
+
     c = {}
     c.update(csrf(request))
     c['post'] = p
     c['comments'] = all_comments
+    c['commenters'] = commenters
     return render(request, 'post.html', c)
+
+def convert_time_to_arabic(time):
+    # INCEPTION! Need to update the humanization translation I guess
+    return time.replace("minutes\ ago", u"دقیقه پیش")\
+            .replace("an\ hour\ ago", u"یک ساعت پیش")\
+            .replace("hours\ ago", u"ساعت قبل")\
+            .replace("a\ minute\ from\ now", u"یک دقیقه از هم اکنون")\
+            .replace("minutes\ from\ now", u"دقیقه از هم اکنون")\
+            .replace("an\ hour\ from\ now", u"یک ساعت از هم اکنون")\
+            .replace("hours\ from\ now", u"ساعت از هم اکنون")\
+            .replace("a\ minute\ ago", u"یک دقیقه پیش")\
+            .replace("seconds\ ago", u"ثانیه پیش")\
+            .replace("now",u"اکنون")
+    # return re.sub("minutes\ ago", u"دقیقه پیش",\
+    #         re.sub("an\ hour\ ago", u"یک ساعت پیش",\
+    #         re.sub("hours\ ago", u"ساعت قبل",\
+    #         re.sub("a\ minute\ from\ now", u"یک دقیقه از هم اکنون",\
+    #         re.sub("minutes\ from\ now", u"دقیقه از هم اکنون",\
+    #         re.sub("an\ hour\ from\ now", u"یک ساعت از هم اکنون",\
+    #         re.sub("hours\ from\ now", u"ساعت از هم اکنون",\
+    #         re.sub("a\ minute\ ago", u"یک دقیقه پیش",\
+    #               re.sub("seconds\ ago", u"ثانیه پیش",\
+    #                     re.sub("now",u"اکنون",time))))))))))
 
 @set_language
 def newcomments(request):

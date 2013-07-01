@@ -13,8 +13,8 @@
     </div>
     <div> 
         <small>
-            {% blocktrans with upvotes=post.upvotes uname=post.user.username timestamp=post.timestamp|naturaltime comments=post.comment_set.count pid=post.id %}
-            <span class="points" data-id="{{pid}}">{{ upvotes }}</span> points by <a href="/user/{{ uname }}">{{ uname }}</a> on {{ timestamp }} | {{ comments }} comments
+            {% blocktrans with upvotes=post.upvotes uname=post.user.username timestamp=post.timestamp comments=post.comment_set.count pid=post.id %}
+            <strong class="points" data-type="post" data-id="{{pid}}">{{ upvotes }}</strong> points by <a href="/user/{{ uname }}">{{ uname }}</a> on {{ timestamp }} | {{ comments }} comments
             {% endblocktrans %}
         </small>
     </div>
@@ -34,10 +34,10 @@
         {% elif comment.depth >= 6 %}
             <div class="span9 margin6" id="{{ comment.id }}">
         {% else %}
-            <div class="span9" id="{{ comment.id }}"><span>{{comment.number}}</span>
+        <div class="span9" id="{{ comment.id }}"><span class="number"> {{comment.number}}</span>
         {% endif %}
         <a name="comment{{comment.id}}"></a>
-        <small>{% blocktrans with uname=comment.user.username timestamp=comment.timestamp|naturaltime upvotes=comment.upvotes %}<a href="/user/{{uname}}">{{ uname }}</a> on {{ timestamp }}, <span class="points">{{ upvotes }}</span> points, {% endblocktrans %}
+        <small>{% blocktrans with uname=comment.user.username timestamp=comment.timestamp upvotes=comment.upvotes cid=comment.id %}<a href="/user/{{uname}}">{{ uname }}</a> on {{ timestamp }}, <strong class="points" data-type="comment" data-id="{{cid}}">{{ upvotes }}</strong> points, {% endblocktrans %}
             <a class="upvote" data-type="comment" data-id="{{ comment.id }}"><img src="/static/thumb_up.png"></a>
             <a class="downvote" data-type="comment" data-id="{{ comment.id }}"><img src="/static/thumb_down.png"></a>
             <p>{{ comment.text }}</p>
@@ -53,6 +53,83 @@ $(document).ready(function() {
         cmtForm.children(".parent-input").attr("value", $(this).data("id"));
         $(this).parent().append(cmtForm);
     });
+    var commenters = [{% for u in commenters %}"{{u.username}}",{%endfor%}];
+
+    var isFindingSomeone = false;
+    var nameBuffer = "";
+    var found = [];
+    $(".input-block-level").keypress(function(event){
+        if (!isFindingSomeone && event.charCode == 64)
+            isFindingSomeone = true;
+        else if(isFindingSomeone)
+        {
+            if(event.which == 32 || event.which == 13)
+            {
+                isFindingSomeone = false;
+                nameBuffer = "";
+                found = [];
+                $("#name-picker").empty();
+                $("#name-picker").hide();
+            }
+            else if(event.which == 8)
+            {
+                if(nameBuffer.length > 0)
+                {
+                    nameBuffer = nameBuffer.slice(0,-1);
+                }
+                else
+                {
+                    isFindingSomeone = false;
+                    nameBuffer = "";
+                    found = [];
+                    $("#name-picker").hide();
+                }
+                found = [];
+            }
+            else
+                nameBuffer += String.fromCharCode(event.charCode);
+        }
+
+        if (isFindingSomeone)
+        {
+            for(var u in commenters)
+            {
+                if (nameBuffer.length > 0 && commenters[u].match(nameBuffer))
+                    found.push(commenters[u]);
+            }
+        }
+
+        if (found.length > 0)
+        {
+            var namePicker = $("#name-picker");
+            namePicker.appendTo("#comment-form");
+            namePicker.empty();
+            for (f in found)
+            {
+                namePicker.append("<div class='suggested-name'>"+found[f]+"</div>");
+            }
+            $('.input-block-level').textareaHelper();
+          // Set the textarea to the content height. i.e. expand as we type.
+            namePicker.css($('.input-block-level').offset() + $('.input-block-level').textareaHelper('caretPos'));
+            namePicker.show();
+            $('.input-block-level').textareaHelper('destroy');
+            console.log(namePicker);
+            found = [];
+            $('.suggested-name').click(function(event){
+                $('.input-block-level').val($('.input-block-level').val().slice(0,-nameBuffer.length)+
+                $(this).html() + " ");
+                isFindingSomeone = false;
+                nameBuffer = "";
+                found = [];
+                $("#name-picker").empty();
+                $("#name-picker").hide();
+            });
+
+        }
+
+    });
 });
 </script>
+<div id="name-picker" style="display: none">
+</div>
 {% endblock %}

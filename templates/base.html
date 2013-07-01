@@ -40,6 +40,15 @@
           .notification-element {
               border: 1px solid #CCCCCC;
           }
+          .number {
+              border: 1px solid #CCCCCC;
+              border-radius: 50%;
+              width: 20px;
+              height: 20px;
+              text-align: center;
+              margin-left: 10px;
+          }
+
         /*   .navbar-inner */
         /*   { */
         /*       background-color:#ff6600 !important; */
@@ -50,10 +59,27 @@
         a.logout-btn {
             margin-right: 10px;
         }
+        .unread {
+            position: relative;
+            left: 23px;
+            top: 10px;
+            z-index: 100;
+        }
+
+        #name-picker {
+            position: absolute;
+            border: 1px solid #CCCCCC;
+            background: none repeat scroll 0 0 #FFFFFF;
+            width: 200px;
+        }
+        .suggested-name {
+            cursor: pointer;
+        }
 
         </style>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <script src="/static/jquery.cookie.js"></script>
+        <script src="/static/js/jquery.cookie.js"></script>
+        <script src="/static/js/textarea-helper/textarea-helper.js"></script>
     </head>
     <body>
         {% if user.is_authenticated %}
@@ -92,8 +118,11 @@
                         </ul>
                         <p class="navbar-text pull-left">
                         {% if user.is_authenticated %}
-                            {{ user.notifications.unread|length }}
-                        <a href="#" id="messages"><img src="/static/messages.png"></img></a>
+                            <a href="#" id="messages"><img src="/static/messages.png"></img>
+                                {% if user.notifications.unread|length > 0 %}
+                                <strong class="unread btn-info">{{ user.notifications.unread|length }}</strong>
+                                {% endif %}
+                            </a>
             {% blocktrans with user.username as username %}Logged in as <a href="/user/{{ username }}" class="navbar-link">{{ username }}</a>{% endblocktrans %}
                         <a class="logout-btn" href="/logout"><img src="/static/logout.png"></a>
                         {% else %}
@@ -111,11 +140,11 @@
         <footer>
             <div class="container text-center">
                 <hr>
-                <a href="/lists">Lists</a> |
-                <a href="/rss">RSS</a> |
-                <a href="/guidelines">Guidelines</a> | 
-                <a href="/faq">FAQ</a> | 
-                <a href="/featreq">Feature Request</a>
+                <a href="/lists">{% trans "Lists" %}</a> |
+                <a href="/rss">{% trans "RSS" %}</a> |
+                <a href="/guidelines">{% trans "Guidelines" %}</a> |
+                <a href="/faq">{% trans "FAQ" %}</a> |
+                <a href="/featreq">{% trans "Feature Request" %}</a>
                 <p>&copy; Dmitrii Prihodco 2013</p>
             </div>
         </footer>
@@ -146,6 +175,11 @@ $(document).ready(function() {
             $("#notifications-display").html("Sorry no new messages.");
         });
     });
+    function django_why_you_delete_my_translations() {
+        "{%trans "commented" %}"
+        "{%trans "also commented" %}"
+        "{%trans "called you" %}"
+    }
 });
 </script>
     </body>

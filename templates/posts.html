@@ -6,12 +6,12 @@
 <div class="container fontBBCNassim">
     {% for post in posts %}
     <div style="direction:rtl; text-align:right; clear:both; overflow:hidden; height:44px;"> 
-        <span>{{ post.number }}</span>
+        <span class="number">{{ post.number }}</span>
         <a class="upvote" data-type="post" data-id="{{ post.id }}"><img src="/static/thumb_up.png" style="clear: none; display:inline; float:right;"></a>
         <a class="downvote" data-type="post" data-id="{{ post.id }}"><img src="/static/thumb_down.png" style="clear: none; display:inline; float:right;"></a>
         <span style="float:right; font-size:14px !important;"><a href="{{ post.url }}" style="color:#333 !important; font-size:14px !important;">{{ post.title }}</a></span>
         <small style="direction:rtl; color:#666; font-size:14px !important; clear:both; display:block; height:15px;">
-            {% blocktrans with upvotes=post.upvotes uname=post.user.username timestamp=post.timestamp|naturaltime id=post.id comments=post.comment_set.count pid=post.id %}<span class="points" data-id="{{pid}}">{{ upvotes }}</span> points by <a href="/user/{{uname}}">{{ uname }}</a> on {{ timestamp }} | <a href="/post/{{ id }}/"  style="color:#333">{{ comments }} comments </a>{% endblocktrans %}
+            {% blocktrans with upvotes=post.upvotes uname=post.user.username timestamp=post.timestamp|naturaltime id=post.id comments=post.comment_set.count pid=post.id %}<strong class="points" data-type="post" data-id="{{pid}}">{{ upvotes }}</strong> points by <a href="/user/{{uname}}">{{ uname }}</a> on {{ timestamp }} | <a href="/post/{{ id }}/">{{ comments }} comments </a>{% endblocktrans %}
         </small>
         <br />
     </div>
