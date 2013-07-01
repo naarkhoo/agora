@@ -47,6 +47,10 @@
         /*   a { */
         /*     color: #bababa; */
         /* } */
+        a.logout-btn {
+            margin-right: 10px;
+        }
+
         </style>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script src="/static/jquery.cookie.js"></script>
@@ -91,6 +95,7 @@
                             {{ user.notifications.unread|length }}
                         <a href="#" id="messages"><img src="/static/messages.png"></img></a>
             {% blocktrans with user.username as username %}Logged in as <a href="/user/{{ username }}" class="navbar-link">{{ username }}</a>{% endblocktrans %}
+                        <a class="logout-btn" href="/logout"><img src="/static/logout.png"></a>
                         {% else %}
                         <a href="/login" class="navbar-link">{% trans "Login" %}</a>
                         {% endif %}
