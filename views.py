@@ -24,7 +24,7 @@ posts_limit = today - timedelta(days=3)
 
 def set_language(view):
     def wrapped(*args, **kwargs):
-        args[0].session['django_language'] = 'ar'
+        args[0].session['django_language'] = 'fa'
         return view(*args, **kwargs)
     return wrapped
 

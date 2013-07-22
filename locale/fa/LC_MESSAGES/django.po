@@ -1,0 +1,176 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-07-01 14:55+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#: templates/base.html:99
+msgid "Mark all as read."
+msgstr ""
+
+#: templates/base.html:113 templates/post.html:28 templates/submit.html:11
+msgid "Submit"
+msgstr "شوت"
+
+#: templates/base.html:115
+msgid "Comments"
+msgstr "نظرات"
+
+#: templates/base.html:116
+msgid "New"
+msgstr "تازه ها"
+
+# This, and some of the following patterns needed to have included html code
+# Please transfer it to translated string, to its apropriate place
+#: templates/base.html:126
+#, python-format
+msgid ""
+"Logged in as <a href=\"/user/%(username)s\" class=\"navbar-link\">"
+"%(username)s</a>"
+msgstr ""
+"خوش آمدید <a href=\"/user/%(username)s\" class=\"navbar-link\">%(username)s</"
+"a>\n"
+" "
+
+#: templates/base.html:129 templates/login.html:10
+msgid "Login"
+msgstr "ورود"
+
+#: templates/base.html:143
+msgid "Lists"
+msgstr ""
+
+#: templates/base.html:144
+msgid "RSS"
+msgstr ""
+
+#: templates/base.html:145
+msgid "Guidelines"
+msgstr ""
+
+#: templates/base.html:146
+msgid "FAQ"
+msgstr ""
+
+#: templates/base.html:147
+msgid "Feature Request"
+msgstr ""
+
+# TODO Needs translation
+#: templates/base.html:179
+msgid "commented"
+msgstr "Commented"
+
+#: templates/base.html:180
+msgid "also commented"
+msgstr "also commented"
+
+#: templates/base.html:181
+msgid "called you"
+msgstr ""
+
+#: templates/comments.html:10
+#, python-format
+msgid ""
+"By %(uname)s on <a href=\"/post/%(cid)s\" style=\"color:#555\">%(title)s</a>"
+msgstr "نظر %(uname)s در مورد <a href=\"/post/%(cid)s\">%(title)s</a>"
+
+#: templates/comments.html:13
+#, python-format
+msgid ""
+"By <a href=\"/user/%(uname)s\">%(uname)s</a> on <a href=\"/post/%(cid)s\" "
+"style=\"color:#555\">%(title)s</a> %(txt)s"
+msgstr ""
+" <a href=\"/post/%(cid)s\">%(title)s</a> %(txt)s نظر <a href=\"/user/"
+"%(uname)s\">%(uname)s</a> در مورد "
+
+#: templates/login.html:8 templates/login.html.py:14
+msgid "Username"
+msgstr "نام کاربری"
+
+#: templates/login.html:9 templates/login.html.py:15
+msgid "Password"
+msgstr "گذرواژه"
+
+#: templates/login.html:16
+msgid "Register"
+msgstr ""
+
+#: templates/post.html:16
+#, python-format
+msgid ""
+"\n"
+"            <strong class=\"points\" data-type=\"post\" data-id=\"%(pid)s\">"
+"%(upvotes)s</strong> points by <a href=\"/user/%(uname)s\">%(uname)s</a> on "
+"%(timestamp)s | %(comments)s comments\n"
+"            "
+msgstr ""
+
+#: templates/post.html:24
+msgid "Add a comment"
+msgstr "نظر شما چیه ؟"
+
+#: templates/post.html:40
+#,  python-format
+msgid ""
+"<a href=\"/user/%(uname)s\">%(uname)s</a> on %(timestamp)s, <strong class="
+"\"points\" data-type=\"comment\" data-id=\"%(cid)s\">%(upvotes)s</strong> "
+"points, "
+msgstr ""
+"<a href=\"/user/%(uname)s\">%(uname)s</a> گفت %(timestamp)s, "
+"<strong class=\"points\" data-type=\"comment\" data-id=\"%(cid)s\">"
+"%(upvotes)s</strong> موافق"
+
+#: templates/post.html:44
+msgid "Reply"
+msgstr "پاسخ"
+
+#: templates/posts.html:14
+#, python-format
+msgid ""
+"<strong class=\"points\" data-type=\"post\" data-id=\"%(pid)s\">%(upvotes)s</"
+"strong> points by <a href=\"/user/%(uname)s\">%(uname)s</a> on %(timestamp)s "
+"| <a href=\"/post/%(id)s/\">%(comments)s comments </a>"
+msgstr ""
+
+#: templates/submit.html:8
+msgid "Title of this post"
+msgstr "عنوان این بحث"
+
+#: templates/submit.html:9
+msgid "URL"
+msgstr "آدرس الکترونیکی"
+
+#: templates/submit.html:10
+msgid "Write something here."
+msgstr "چیزی بنویسید"
+
+#: templates/user.html:9
+msgid "Karma"
+msgstr "کارما"
+
+#: templates/user.html:13
+msgid "Posts count"
+msgstr "تعداد پست ها"
+
+#: templates/user.html:17
+msgid "Comments count"
+msgstr "تعداد نظرات"
+
+#~ msgid "ago"
+#~ msgstr "پیش"
