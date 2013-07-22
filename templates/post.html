@@ -21,11 +21,12 @@
     {% if user.is_authenticated %}
     <form id="comment-form" class="comment-form" action="/comment" method="post">
         {% csrf_token %}
-        <textarea class="input-block-level" placeholder="{% trans "Add a comment" %}" name="text"></textarea>
+        <textarea id="comment-text" class="input-block-level" placeholder="{% trans "Add a comment" %}" name="text"></textarea>
         <input type="hidden" name="post" value="{{ post.id }}"></input>
         <input type="hidden" class="parent-input" name="parent"value="0"></input>
         <input type="hidden" name="user" value="{{ user.id }}"></input>
         <button class="btn btn-primary" type="submit">{% trans "Submit" %}</button>
+        {% include "mykeyb.html" %}
     </form>
     {% endif %}
     {% for comment in comments %}

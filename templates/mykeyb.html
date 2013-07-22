@@ -1,0 +1,29 @@
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+
+      // Load the Google Onscreen Keyboard API
+      google.load("elements", "1", {
+          packages: "keyboard"
+      });
+
+      function onLoad() {
+        var kbd = new google.elements.keyboard.Keyboard(
+          [google.elements.keyboard.LayoutCode.PERSIAN],
+          ['comment-text']);
+      }
+
+      google.setOnLoadCallback(onLoad);
+    </script>
+    <style>
+    input[id*=K] {
+        width: 24px;
+    }
+    #K32 {
+        /* padding-left: 50px; */
+        width: 248px;
+    }
+    #K273 {
+        width: 56px;
+    }
+    </style>
