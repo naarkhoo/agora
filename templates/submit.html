@@ -5,10 +5,10 @@
 <div >
     <form action="/submit" method="post">
         {% csrf_token %}
-        <input type="text" id="t1" class="input-block-level" placeholder="{% trans "Title of this post" %}" name="title">
+        <input type="text" id="comment-text" class="input-block-level" placeholder="{% trans "Title of this post" %}" name="title">
         {% include "mykeyb.html" %}
         <input type="text" class="input-block-level" placeholder="{% trans "URL" %}" name="url">
-        <textarea id="t1" class="input-block-level" placeholder="{% trans "Write something here." %}" name="text"></textarea>
+        <textarea id="comment-text" class="input-block-level" placeholder="{% trans "Write something here." %}" name="text"></textarea>
         {% include "mykeyb.html" %}
         <button class="btn btn-large btn-primary" type="submit">{% trans "Submit" %}</button>
     </form>
