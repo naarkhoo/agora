@@ -21,15 +21,15 @@ msgstr ""
 
 #: templates/base.html:99
 msgid "Mark all as read."
-msgstr ""
+msgstr "خواندم"
 
 #: templates/base.html:113 templates/post.html:28 templates/submit.html:11
 msgid "Submit"
-msgstr "شوت"
+msgstr "بنار"
 
 #: templates/base.html:115
 msgid "Comments"
-msgstr "نظرات"
+msgstr "نظر ها"
 
 #: templates/base.html:116
 msgid "New"
@@ -42,8 +42,7 @@ msgstr "تازه ها"
 msgid ""
 "Logged in as <a href=\"/user/%(username)s\" class=\"navbar-link\">"
 "%(username)s</a>"
-msgstr ""
-"خوش آمدید <a href=\"/user/%(username)s\" class=\"navbar-link\">%(username)s</"
+msgstr "خوش آمدید <a href=\"/user/%(username)s\" class=\"navbar-link\">%(username)s</"
 "a>\n"
 " "
 
@@ -53,7 +52,7 @@ msgstr "ورود"
 
 #: templates/base.html:143
 msgid "Lists"
-msgstr ""
+msgstr "فهرست ها"
 
 #: templates/base.html:144
 msgid "RSS"
@@ -61,28 +60,28 @@ msgstr ""
 
 #: templates/base.html:145
 msgid "Guidelines"
-msgstr ""
+msgstr "دستورکار"
 
 #: templates/base.html:146
 msgid "FAQ"
-msgstr ""
+msgstr "سوالات متداول"
 
 #: templates/base.html:147
 msgid "Feature Request"
-msgstr ""
+msgstr "درخواست جلوه"
 
 # TODO Needs translation
 #: templates/base.html:179
 msgid "commented"
-msgstr "Commented"
+msgstr "نظر داده"
 
 #: templates/base.html:180
 msgid "also commented"
-msgstr "also commented"
+msgstr "هم نظر داده"
 
 #: templates/base.html:181
 msgid "called you"
-msgstr ""
+msgstr "شما را صدا کرده"
 
 #: templates/comments.html:10
 #, python-format
@@ -109,7 +108,7 @@ msgstr "گذرواژه"
 
 #: templates/login.html:16
 msgid "Register"
-msgstr ""
+msgstr "اسم نویسی"
 
 #: templates/post.html:16
 #, python-format
@@ -132,13 +131,14 @@ msgid ""
 "\"points\" data-type=\"comment\" data-id=\"%(cid)s\">%(upvotes)s</strong> "
 "points, "
 msgstr ""
-"<a href=\"/user/%(uname)s\">%(uname)s</a> گفت %(timestamp)s, "
-"<strong class=\"points\" data-type=\"comment\" data-id=\"%(cid)s\">"
-"%(upvotes)s</strong> موافق"
+"<a href=\"/user/%(uname)s\">%(uname)s</a> در %(timestamp)s, <strong class="
+"\"points\" data-type=\"comment\" data-id=\"%(cid)s\">%(upvotes)s</strong> "
+"امتیاز "
+
 
 #: templates/post.html:44
 msgid "Reply"
-msgstr "پاسخ"
+msgstr "جواب"
 
 #: templates/posts.html:14
 #, python-format
@@ -162,7 +162,7 @@ msgstr "چیزی بنویسید"
 
 #: templates/user.html:9
 msgid "Karma"
-msgstr "کارما"
+msgstr "کارنامه"
 
 #: templates/user.html:13
 msgid "Posts count"
@@ -170,7 +170,7 @@ msgstr "تعداد پست ها"
 
 #: templates/user.html:17
 msgid "Comments count"
-msgstr "تعداد نظرات"
+msgstr "تعداد نظر ها"
 
 #~ msgid "ago"
 #~ msgstr "پیش"
