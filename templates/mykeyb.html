@@ -1,3 +1,4 @@
+{% load i18n %}
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
@@ -6,12 +7,24 @@
       google.load("elements", "1", {
           packages: "keyboard"
       });
+    var kbd;
 
       function onLoad() {
-        var kbd = new google.elements.keyboard.Keyboard(
+        kbd = new google.elements.keyboard.Keyboard(
           [google.elements.keyboard.LayoutCode.PERSIAN],
           ['comment-text']);
+        $("#virt_kbd_shower").click(function() {
+            if (kbd.isVisible()) {
+                $(this).html("{% trans "Show virtual keyboard" %}");
+                kbd.setVisible(false);
+            }
+            else {
+                $(this).html("{% trans "Hide virtual keyboard" %}");
+                kbd.setVisible(true);
+            }
+            });
       }
+
 
       google.setOnLoadCallback(onLoad);
     </script>
