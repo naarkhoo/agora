@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-01 14:55+0300\n"
+"POT-Creation-Date: 2013-08-15 02:24+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,67 +19,68 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: templates/base.html:99
+#: templates/base.html:100
 msgid "Mark all as read."
 msgstr "خواندم"
 
-#: templates/base.html:113 templates/post.html:28 templates/submit.html:11
+#: templates/base.html:114 templates/post.html:32 templates/submit.html:11
 msgid "Submit"
 msgstr "بنار"
 
-#: templates/base.html:115
+#: templates/base.html:116 templates/user.html:10
 msgid "Comments"
 msgstr "نظر ها"
 
-#: templates/base.html:116
+#: templates/base.html:117
 msgid "New"
 msgstr "تازه ها"
 
 # This, and some of the following patterns needed to have included html code
 # Please transfer it to translated string, to its apropriate place
-#: templates/base.html:126
+#: templates/base.html:127
 #, python-format
 msgid ""
 "Logged in as <a href=\"/user/%(username)s\" class=\"navbar-link\">"
 "%(username)s</a>"
-msgstr "خوش آمدید <a href=\"/user/%(username)s\" class=\"navbar-link\">%(username)s</"
+msgstr ""
+"خوش آمدید <a href=\"/user/%(username)s\" class=\"navbar-link\">%(username)s</"
 "a>\n"
 " "
 
-#: templates/base.html:129 templates/login.html:10
+#: templates/base.html:130 templates/login.html:10
 msgid "Login"
 msgstr "ورود"
 
-#: templates/base.html:143
+#: templates/base.html:144
 msgid "Lists"
 msgstr "فهرست ها"
 
-#: templates/base.html:144
+#: templates/base.html:145
 msgid "RSS"
 msgstr ""
 
-#: templates/base.html:145
+#: templates/base.html:146
 msgid "Guidelines"
 msgstr "دستورکار"
 
-#: templates/base.html:146
+#: templates/base.html:147
 msgid "FAQ"
 msgstr "سوالات متداول"
 
-#: templates/base.html:147
+#: templates/base.html:148
 msgid "Feature Request"
 msgstr "درخواست جلوه"
 
 # TODO Needs translation
-#: templates/base.html:179
+#: templates/base.html:180
 msgid "commented"
 msgstr "نظر داده"
 
-#: templates/base.html:180
+#: templates/base.html:181
 msgid "also commented"
 msgstr "هم نظر داده"
 
-#: templates/base.html:181
+#: templates/base.html:182
 msgid "called you"
 msgstr "شما را صدا کرده"
 
@@ -89,7 +90,7 @@ msgid ""
 "By %(uname)s on <a href=\"/post/%(cid)s\" style=\"color:#555\">%(title)s</a>"
 msgstr "نظر %(uname)s در مورد <a href=\"/post/%(cid)s\">%(title)s</a>"
 
-#: templates/comments.html:13
+#: templates/comments.html:13 templates/user/comments.html:4
 #, python-format
 msgid ""
 "By <a href=\"/user/%(uname)s\">%(uname)s</a> on <a href=\"/post/%(cid)s\" "
@@ -110,7 +111,15 @@ msgstr "گذرواژه"
 msgid "Register"
 msgstr "اسم نویسی"
 
-#: templates/post.html:16
+#: templates/mykeyb.html:18
+msgid "Show virtual keyboard"
+msgstr ""
+
+#: templates/mykeyb.html:22 templates/post.html:33
+msgid "Hide virtual keyboard"
+msgstr ""
+
+#: templates/post.html:20
 #, python-format
 msgid ""
 "\n"
@@ -120,12 +129,12 @@ msgid ""
 "            "
 msgstr ""
 
-#: templates/post.html:24
+#: templates/post.html:28
 msgid "Add a comment"
 msgstr "نظر شما چیه ؟"
 
-#: templates/post.html:40
-#,  python-format
+#: templates/post.html:49
+#, python-format
 msgid ""
 "<a href=\"/user/%(uname)s\">%(uname)s</a> on %(timestamp)s, <strong class="
 "\"points\" data-type=\"comment\" data-id=\"%(cid)s\">%(upvotes)s</strong> "
@@ -135,12 +144,11 @@ msgstr ""
 "\"points\" data-type=\"comment\" data-id=\"%(cid)s\">%(upvotes)s</strong> "
 "امتیاز "
 
-
-#: templates/post.html:44
+#: templates/post.html:53
 msgid "Reply"
 msgstr "جواب"
 
-#: templates/posts.html:14
+#: templates/posts.html:14 templates/user/posts.html:10
 #, python-format
 msgid ""
 "<strong class=\"points\" data-type=\"post\" data-id=\"%(pid)s\">%(upvotes)s</"
@@ -161,16 +169,77 @@ msgid "Write something here."
 msgstr "چیزی بنویسید"
 
 #: templates/user.html:9
+msgid "Info"
+msgstr ""
+
+#: templates/user.html:11
+#, fuzzy
+msgid "Posts"
+msgstr "تعداد پست ها"
+
+#: templates/user.html:13
+msgid "Settings"
+msgstr ""
+
+#: templates/user.html:24 templates/user.html.py:30
+msgid "About me"
+msgstr ""
+
+#: templates/user.html:35
 msgid "Karma"
 msgstr "کارنامه"
 
-#: templates/user.html:13
+#: templates/user.html:39
 msgid "Posts count"
 msgstr "تعداد پست ها"
 
-#: templates/user.html:17
+#: templates/user.html:43
 msgid "Comments count"
 msgstr "تعداد نظر ها"
+
+#: templates/user.html:53
+msgid "From"
+msgstr ""
+
+#: templates/user.html:59
+msgid "Age"
+msgstr ""
+
+#: templates/user.html:64
+msgid "Member Since"
+msgstr ""
+
+#: templates/user.html:79
+msgid "URL to your site, or anywhere you would like."
+msgstr ""
+
+#: templates/user.html:80
+msgid "Your email"
+msgstr ""
+
+#: templates/user.html:81
+msgid "<b>TIP: </b>We use gravatars!"
+msgstr ""
+
+#: templates/user.html:82
+msgid "Show my email to the public."
+msgstr ""
+
+#: templates/user.html:83
+msgid "Where are you from?"
+msgstr ""
+
+#: templates/user.html:84
+msgid "Your age?"
+msgstr ""
+
+#: templates/user.html:85
+msgid "Tell about yourself."
+msgstr ""
+
+#: templates/user.html:86
+msgid "Save"
+msgstr ""
 
 #~ msgid "ago"
 #~ msgstr "پیش"

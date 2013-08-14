@@ -3,6 +3,7 @@
 from datetime import date, timedelta, datetime
 from urlparse import urlparse
 import re
+import json
 # from urlparse import urlparse
 
 from django.shortcuts import render, redirect
@@ -12,11 +13,12 @@ from django.contrib.auth.decorators import login_required
 from django.core.context_processors import csrf
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
+from django import forms
 from django.contrib.humanize.templatetags.humanize import naturaltime
 
 from notifications import notify
 from notifications.models import Notification
-from agora.models import Karma, Post, Comment, CommentVotes, PostVotes
+from agora.models import Karma, Post, Comment, CommentVotes, PostVotes, UserInfo
 
 today = date.today()
 posts_limit = today - timedelta(days=3)
@@ -89,7 +91,9 @@ def register(request):
     username = request.POST['name']
     password = request.POST['pass']
     user = User.objects.create_user(username=username, password=password)
+    info = UserInfo(user=user)
     user.save()
+    info.save()
     user = authenticate(username=username, password=password)
     lin(request, user)
     return redirect("/")
@@ -216,10 +220,47 @@ def user(request, username):
     comments = user.comment_set.all()
     if len(comments) > 0:
         karma += sum([x.upvotes for x in comments])
-
+    info = UserInfo.objects.get(user=user)
+    print info.homepage
     return render(request, "user.html", {"usr":user, "karma":karma,
                                          "posts_count": len(posts),
-                                         "comments_count": len(comments)})
+                                         "comments_count": len(comments),
+                                         "info": info})
+
+def user_comments(request, username):
+    user = User.objects.get(username=username)
+    comments = Comment.objects.filter(user=user).order_by("-timestamp")[:200]
+    if len(comments) == 0:
+        return HttpResponse("This user was silent.")
+    else:
+        return render(request, 'user/comments.html', {"comments":comments})
+
+def user_posts(request, username):
+    user = User.objects.get(username=username)
+    posts = Post.objects.filter(user=user).order_by("-timestamp")
+    if len(posts) == 0:
+        return HttpResponse("This user wasn't posting.")
+    else:
+        return render(request, 'user/posts.html', {"posts":posts})
+
+@login_required
+def user_settings(request):
+    form = request.POST
+    user = request.user
+    if form['email'] != "":
+        user.email = form['email']
+        user.save()
+    info = UserInfo.objects.get(user=user)
+    info.age = form['age']
+    if 'show_email' in form and form['show_email'] == "on":
+        info.show_email = True
+    else:
+        info.show_email = False
+    info.homepage = form['url']
+    info.about = form['about']
+    info.location = form['location']
+    info.save()
+    return redirect("/user/%s" % user.username)
 
 @set_language
 def post(request, post_id):

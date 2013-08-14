@@ -25,6 +25,9 @@ urlpatterns = patterns('',
     url(r"^rss", LatestEntriesFeed()),
     url(r"^lists", "agora.lists.main", name="lists"),
     url(r"^notifications/read-all", "agora.views.read_all"),
+    url(r"^user_comments/(?P<username>\w+)", "agora.views.user_comments"),
+    url(r"^user_posts/(?P<username>\w+)", "agora.views.user_posts"),
+    url(r"^user_settings", "agora.views.user_settings"),
 
     # Examples:
     # url(r'^$', 'haknews.views.home', name='home'),

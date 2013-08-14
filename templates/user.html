@@ -1,22 +1,119 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load gravatar %}
 
 {% block body %}
 <div >
     <h3>{{ usr.username }}</h3>
-    <table>
-        <tr>
-            <td>{% trans "Karma" %}</td>
-            <td>{{ karma }}</td>
-        </tr>
-        <tr>
-            <td>{% trans "Posts count" %}</td>
-            <td>{{ posts_count }}</td>
-        </tr>
-        <tr>
-            <td>{% trans "Comments count" %}</td>
-            <td>{{ comments_count }}</td>
-        </tr>
-    </table>
+    <ul id="user-nav" class="nav nav-tabs" data-tabs="tabs">
+        <li class="active"><a href="#user-info" data-toggle="tab">{% trans "Info" %}</a></li>
+        <li><a href="#user-comments" data-toggle="tab">{% trans "Comments" %}</a></li>
+        <li><a href="#user-posts"  data-toggle="tab">{% trans "Posts" %}</a></li>
+        {% if user == usr %}
+        <li><a href="#user-settings" data-toggle="tab">{% trans "Settings" %}</a></li>
+        {% endif %}
+    </ul>
+    <div class="tab-content" id="content">
+        <div class="tab-pane active" id="user-info">
+            {% if usr.email != "" %}
+                {% gravatar usr.email 200 %}
+            {% endif %}
+            <table>
+                {% if info.homepage != "" %}
+                <tr>
+                    <!--<td>{% trans "About me" %}</td>-->
+                    <td>{{ info.homepage }}</td>
+                </tr>
+                {% endif %}
+                {% if info.show_email and usr.email != "" %}
+                <tr>
+                    <!--<td>{% trans "About me" %}</td>-->
+                    <td>{{ usr.email }}</td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <td>{% trans "Karma" %}</td>
+                    <td>{{ karma }}</td>
+                </tr>
+                <tr>
+                    <td>{% trans "Posts count" %}</td>
+                    <td>{{ posts_count }}</td>
+                </tr>
+                <tr>
+                    <td>{% trans "Comments count" %}</td>
+                    <td>{{ comments_count }}</td>
+                </tr>
+                {% if info.about != "" %}
+                <tr>
+                    <td colspan="2"><samp>{{ info.about }}</samp></td>
+                </tr>
+                {% endif %}
+                {% if info.location != "" %}
+                <tr>
+                    <td>{% trans "From" %}</td>
+                    <td>{{ info.location }}</td>
+                </tr>
+                {% endif %}
+                {% if info.age != 0 %}
+                <tr>
+                    <td>{% trans "Age" %}</td>
+                    <td>{{ info.age }}</td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <td>{% trans "Member Since" %}</td>
+                    <td>{{ info.timestamp }}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="tab-pane" data-loaded="false" id="user-comments">
+            <img src="/static/loading.gif">
+        </div>
+        <div class="tab-pane" data-loaded="false" id="user-posts">
+            <img src="/static/loading.gif">
+        </div>
+        {% if user == usr %}
+        <div class="tab-pane" id="user-settings">
+            <form id="settings" class='input-inline' action="/user_settings" method="POST">
+                {% csrf_token %}
+                <input type="text" class="input-block-level" placeholder="{% trans "URL to your site, or anywhere you would like." %}" name="url" value="{{ info.homepage}}">
+                <input type="text" class="input-block-level" placeholder="{% trans "Your email" %}" name="email" value="{{usr.email}}">
+                <small>{% trans "<b>TIP: </b>We use gravatars!" %}</small>
+                <label><input type="checkbox" class="input-inline" name="show_email"/>{% trans "Show my email to the public." %}</label>
+                <input type="text" class="input-block-level" placeholder="{% trans "Where are you from?" %}" name="location" value="{{info.location}}">
+                <input type="number" class="input-block-level" placeholder="{% trans "Your age?" %}" name="age" value="{{info.age}}">
+                <textarea class="input-block-level" placeholder="{% trans "Tell about yourself." %}" name="about">{{info.about}}</textarea>
+                <button class="btn btn-large btn-primary" type="submit">{% trans "Save" %}</button>
+
+            </form>
+        </div>
+        {% endif %}
+    </div>
 </div>
+<script>
+$(document).ready(function() {
+    $("#user-nav a").tab();
+    $('#user-nav a').click(function (e) {
+    e.preventDefault();
+    $(this).tab('show');
+    });
+    $('a[data-toggle="tab"]').on('show', function(e) {
+        var tab = $($(this).attr("href"));
+        if (tab.data('loaded') == '0')
+        {
+            console.log(tab)
+            if (tab.attr('id') == "user-comments")
+                url = '/user_comments/{{ usr.username }}';
+            else
+                url = '/user_posts/{{ usr.username }}';
+        $.get(url, success=function(data, textStatus, jqXHR){
+            console.log(data);
+            tab.html(data);
+            tab.data("loaded","true");
+            });
+        }
+    });
+
+});
+</script>
 {% endblock %}

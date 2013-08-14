@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load humanize %}
+{% load gravatar %}
 
 {% block body %}
     <div> 
@@ -12,6 +13,9 @@
         {{ post.text }}
     </div>
     <div> 
+        {% if post.user.email != "" %}
+            {% gravatar post.user.email 24 %}
+        {% endif %}
         <small>
             {% blocktrans with upvotes=post.upvotes uname=post.user.username timestamp=post.timestamp comments=post.comment_set.count pid=post.id %}
             <strong class="points" data-type="post" data-id="{{pid}}">{{ upvotes }}</strong> points by <a href="/user/{{ uname }}">{{ uname }}</a> on {{ timestamp }} | {{ comments }} comments
@@ -39,6 +43,9 @@
         <div class="span9" id="{{ comment.id }}"><span class="number"> {{comment.number}}</span>
         {% endif %}
         <a name="comment{{comment.id}}"></a>
+        {% if comment.user.email != "" %}
+            {% gravatar comment.user.email 24 %}
+        {% endif %}
         <small>{% blocktrans with uname=comment.user.username timestamp=comment.timestamp upvotes=comment.upvotes cid=comment.id %}<a href="/user/{{uname}}">{{ uname }}</a> on {{ timestamp }}, <strong class="points" data-type="comment" data-id="{{cid}}">{{ upvotes }}</strong> points, {% endblocktrans %}
             <a class="upvote" data-type="comment" data-id="{{ comment.id }}"><img src="/static/thumb_up.png"></a>
             <a class="downvote" data-type="comment" data-id="{{ comment.id }}"><img src="/static/thumb_down.png"></a>

@@ -1,0 +1,6 @@
+{% load i18n %}
+    {% for comment in comments %}
+    <div style="direction:rtl; text-align:right; clear:both; overflow:hidden; height:38px;"> 
+        <span style="float:right; color:#666; font-size:12px;">{% blocktrans with uname=comment.user.username cid=comment.post.id title=comment.post.title txt=comment.text %}By <a href="/user/{{uname}}">{{ uname }}</a> on <a href="/post/{{ cid }}" style="color:#555">{{ title }}</a> {{txt}}{% endblocktrans %}</span>
+    </div>
+    {% endfor %}
