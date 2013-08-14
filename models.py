@@ -10,6 +10,16 @@ class BaseItem(models.Model):
     class Meta:
         abstract = True
 
+class UserInfo(models.Model):
+    homepage = models.URLField(default='')
+    about = models.TextField(default='')
+    # picture = models.TextField(default='')
+    location = models.TextField(default='')
+    age = models.IntegerField(default=0)
+    user = models.ForeignKey(User, unique=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    show_email = models.BooleanField(default=False)
+
 class Post(BaseItem):
     title = models.TextField(db_index=True)
     url = models.URLField(default='')
