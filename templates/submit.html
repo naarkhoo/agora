@@ -10,7 +10,8 @@
         <input type="text" class="input-block-level" placeholder="{% trans "URL" %}" name="url">
         <textarea id="comment-text" class="input-block-level" placeholder="{% trans "Write something here." %}" name="text"></textarea>
         {% include "mykeyb.html" %}
-        <button class="btn btn-large btn-primary" type="submit">{% trans "Submit" %}</button>
+        <button class="btn btn-primary" type="submit">{% trans "Submit" %}</button>
+        <a id="virt_kbd_shower" class="btn btn-info">{% trans "Hide virtual keyboard" %}</a>
     </form>
 </div>
 {% endblock %}
